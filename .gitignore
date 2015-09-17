@@ -29,3 +29,6 @@
 
 # CLion
 .idea
+
+# Mac
+*.DS_Store
