@@ -3,7 +3,7 @@
 using namespace std;
 
 int main(void) {
-	std::ios_base::sync_with_stdio(false) a
+	std::ios_base::sync_with_stdio(false)
 	
 	int n;
 	cin >> n;
