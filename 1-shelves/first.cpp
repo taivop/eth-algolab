@@ -1,12 +1,15 @@
 #include <iostream>
 #include <vector>
+#include <string>
 
 using namespace std;
 
 vector<int> recurse(vector<int> v, int l, int m, int n) {
-	//printf("%d %d %d\n", v[1], v[2], v[0]);
-
 	int current_len = v[0];
+
+	int tabs_count = current_len / 100;
+	string tabs = string(tabs_count, ' ');
+	printf("%s| %d %d %d\n", tabs.c_str(), v[0], v[1], v[2]);
 
 	// check if conditions are satisfied
 	if(current_len == l) {
@@ -21,12 +24,16 @@ vector<int> recurse(vector<int> v, int l, int m, int n) {
 		added_n[2] += 1;
 		added_n[0] = current_len + n;
 		vector<int> result_n = recurse(added_n, l, m, n);
+		if(result_n[0] == l) // prune
+			return result_n;
 
 		// put in m and recurse
 		vector<int> added_m = v;
 		added_m[1] += 1;
 		added_m[0] = current_len + m;
 		vector<int> result_m = recurse(added_m, l, m, n);
+		if(result_m[0] == l) // prune
+			return result_m;
 
 		//printf("\tn: %d %d %d\n", result_n[0], result_n[1], result_n[2]);
 		//printf("\tm: %d %d %d\n", result_m[0], result_m[1], result_m[2]);
