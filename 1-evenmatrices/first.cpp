@@ -26,26 +26,35 @@ void test_case() {
 		}
 	}
 	
-	// Construct sums matrix
+	// Construct sums and evens matrix
 	bool sums[n][n];
+	int evens[n][n];
+
 	for(int i=0; i<n; i++) {
 		for(int j=0; j<n; j++) {
 
 			// First row or column are special cases
 			if(j == 0) {
 
-				if(i == 0)
+				if(i == 0) {
 					sums[i][j] = bits[i][j];
-				else 
+					evens[i][j] = !sums[i][j];
+				}
+				else {
 					sums[i][j] = combine(sums[i-1][j], bits[i][j]);
+					evens[i][j] = evens[i-1][j] + !sums[i][j];
+				}
 
 			} else {
 
-				if(i == 0)
+				if(i == 0) {
 					sums[i][j] = combine(sums[i][j-1], bits[i][j]);
+					evens[i][j] = evens[i][j-1] + !sums[i][j];
+				}
 				else {
 					bool excluding_current = combine3(sums[i-1][j-1], sums[i-1][j], sums[i][j-1]);
 					sums[i][j] = combine(excluding_current, bits[i][j]);
+					evens[i][j] = evens[i-1][j] + evens[i][j-1] + !sums[i][j] - evens[i-1][j-1];
 				}
 
 			}
@@ -56,14 +65,14 @@ void test_case() {
 	/*
 	for (int r = 0; r < n; ++r) {
 		for (int c = 0; c < n; ++c) {
-			std::cout << sums[r][c] << " ";
+			std::cout << evens[r][c] << " ";
 		}
 		std::cout << std::endl;
 	}
 	*/
 
 	// Count number of even matrices
-	int num_even_pairs = 0;
+	int num_even_matrices = 0;
 	for(int i1=0; i1<n; i1++) {
 		for(int i2=i1; i2<n; i2++) {
 			for(int j1=0; j1<n; j1++) {
@@ -88,14 +97,14 @@ void test_case() {
 
 					// Matrix is even if parity is 0
 					if(!parity)
-						num_even_pairs += 1;
+						num_even_matrices += 1;
 
 				}
 			}
 		}
 	}
 
-	cout << num_even_pairs << endl;
+	cout << num_even_matrices << endl;
 
 }
 
