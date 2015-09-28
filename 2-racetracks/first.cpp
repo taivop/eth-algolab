@@ -115,8 +115,8 @@ void test_case() {
 
 		// Check if we are at the end
 		if(current.x == finish_x && current.y == finish_y) {
-			printf("Optimal solution takes %d hops.", current.num_hops);
-			cout << endl;
+			//printf("Optimal solution takes %d hops.", current.num_hops);
+			cout << "Optimal solution takes " << current.num_hops << " hops." << endl;
 			return;
 		}
 
