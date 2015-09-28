@@ -84,7 +84,7 @@ void test_case() {
 	Q.push(start);
 
 	while(!Q.empty()) {
-		// Take a node and mark as visited
+		// Take a node
 		node current = Q.front();
 		Q.pop();
 
@@ -93,12 +93,6 @@ void test_case() {
 			continue;
 		else
 			visited[current.x][current.y][current.v_x+3][current.v_y+3] = true;
-
-		// Check if we are at the end
-		if(current.x == finish_x && current.y == finish_y) {
-			printf("Optimal solution takes %d hops.\n", current.num_hops);
-			return;
-		}
 
 		// Print board
 		/*for(int a=0; a<X; a++) {
@@ -115,7 +109,16 @@ void test_case() {
 					cout << ".";
 			}
 			cout << endl;
-		}*/
+		}
+		printf("Speed (%d, %d). Done %d hops. Queue size %ld.\n", current.v_x, current.v_y, current.num_hops, Q.size());
+		cout << "-----" << endl;*/
+
+		// Check if we are at the end
+		if(current.x == finish_x && current.y == finish_y) {
+			printf("Optimal solution takes %d hops.", current.num_hops);
+			cout << endl;
+			return;
+		}
 
 		// Add all legal changes of velocity into the queue
 		for(int d_v_x=-1; d_v_x<=1; d_v_x++) {
@@ -129,15 +132,15 @@ void test_case() {
 					if(obstacle[new_x][new_y])
 						continue;
 					if(0 <= new_y && new_y < Y && -3 <= new_v_y && new_v_y <= 3) {
-						node new_node = node(new_x, new_y, new_v_x, new_v_y, current.num_hops+1);
+						int new_num_hops = current.num_hops + 1;
+						if(new_v_x == 0 && new_v_y == 0)
+							new_num_hops -= 1;
+						node new_node = node(new_x, new_y, new_v_x, new_v_y, new_num_hops);
 						Q.push(new_node);
 					}
 				}
 			}
 		}
-
-		/*printf("Queue size %ld.\n", Q.size());
-		cout << "-----" << endl;*/
 
 	}
 
