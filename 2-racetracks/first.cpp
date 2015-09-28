@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <unordered_set>
 
 using namespace std;
 
@@ -70,8 +71,14 @@ void test_case() {
 
 
 	// ---- Actual solution part ----
-	vector<node> visited;
 	queue<node> Q;
+	bool visited[X][Y][7][7];
+
+	for(int a=0; a<X; a++)
+		for(int b=0; b<Y; b++)
+			for(int c=0; c<7; c++)
+				for(int d=0; d<7; d++)
+					visited[a][b][c][d] = false;
 
 	node start = node(start_x, start_y, 0, 0, 0);
 	Q.push(start);
@@ -82,17 +89,10 @@ void test_case() {
 		Q.pop();
 
 		// Check if node was already visited
-		bool already_visited = false;
-		for(int i=0; i<visited.size(); i++) {
-			if(visited[i] == current) {
-				already_visited = true;
-				break;
-			}
-		}
-		if(already_visited)
+		if(visited[current.x][current.y][current.v_x+3][current.v_y+3])
 			continue;
 		else
-			visited.push_back(current);
+			visited[current.x][current.y][current.v_x+3][current.v_y+3] = true;
 
 		// Check if we are at the end
 		if(current.x == finish_x && current.y == finish_y) {
