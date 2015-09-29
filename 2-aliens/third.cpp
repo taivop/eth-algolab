@@ -41,7 +41,7 @@ void test_case() {
 			vector<int> dom_humans_b;
 			bool skip_alien = false;
 
-			for(int j=0; j<m; j++) {
+			for(int j=0; j<n; j++) {
 				// don't compare alien with self
 				if(i==j)
 					continue;
