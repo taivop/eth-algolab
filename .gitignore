@@ -32,3 +32,9 @@
 
 # Mac
 *.DS_Store
+
+# CGAL generated files
+*.cmake
+*.txt
+CMakeFiles
+Makefile
