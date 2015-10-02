@@ -68,7 +68,6 @@ void test_case() {
 				dom_humans_a.push_back(p[i]);
 				dom_humans_b.push_back(q[i]);
 
-
 				int last_b = 0;
 				while(dom_humans_a.size() > 0) {
 					// Take leftmost interval
