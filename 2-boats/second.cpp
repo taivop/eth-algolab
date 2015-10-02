@@ -61,7 +61,7 @@ void test_case() {
 	parked[leftmost.id] = true;
 	counter++;
 	int left_limit = leftmost.x + leftmost.length;
-	print_boat(leftmost);
+	//print_boat(leftmost);
 
 	for(int i=1; i<boats.size(); i++) {
 
@@ -74,14 +74,13 @@ void test_case() {
 			left_limit = current_boat.x + current_boat.length;
 			parked[current_boat.id] = true;
 			counter++;
-			print_boat(current_boat);
+			//print_boat(current_boat);
 		}
 	}
 
 
 
 	cout << counter << endl;
-	cout << 2;
 
 }
 
