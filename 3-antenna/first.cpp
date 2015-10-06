@@ -3,7 +3,6 @@
 #include <CGAL/Exact_predicates_exact_constructions_kernel_with_sqrt.h>
 #include <CGAL/Min_circle_2.h>
 #include <CGAL/Min_circle_2_traits_2.h>
-#include <CGAL/squared_distance_2.h> //for 2D functions
 
 typedef CGAL::Exact_predicates_exact_constructions_kernel_with_sqrt K;
 typedef CGAL::Min_circle_2_traits_2<K>  Traits;
@@ -39,7 +38,7 @@ void test_case(int n) {
 	K::FT r_squared = c.squared_radius();
 	K::FT r = sqrt(r_squared);
 
-	cout << ceil_to_double(r) << endl;
+	cout << (long) ceil_to_double(r) << endl;
 	
 	return;
 }
