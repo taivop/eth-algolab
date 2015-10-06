@@ -16,6 +16,8 @@ void test_case(int n) {
 
 	K::Ray_2 phileas(source, another);
 
+	bool yes = false;
+
 	for(int i=0; i<n; i++) {
 		long r, s, t, u;
 		cin >> r >> s >> t >> u;
@@ -23,15 +25,22 @@ void test_case(int n) {
 		K::Point_2 p1(r, s), p2(t, u);
 		K::Segment_2 seg(p1, p2);
 
-		if(do_intersect(phileas, seg)) {
-			cout << "yes" << endl;
-			return;
-			
+		if(CGAL::left_turn(source, another, p1) && CGAL::left_turn(source, another, p2) || 
+			CGAL::right_turn(source, another, p1) && CGAL::right_turn(source, another, p2) ||
+			CGAL::angle(another, source, p1) == CGAL::OBTUSE && CGAL::angle(another, source, p2) == CGAL::OBTUSE // BAp1 and BAp2 are both obtuse
+			) {
+
+		} else {
+			yes = true;
 		}
 	}
 	
-	cout << "no" << endl;
-
+	if(yes)
+		cout << "yes" << endl;
+	else
+		cout << "no" << endl;
+	
+	return;
 }
 
 int main(void) {
