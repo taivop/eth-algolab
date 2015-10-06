@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include <CGAL/Exact_predicates_exact_constructions_kernel_with_sqrt.h>
 #include <CGAL/Min_circle_2.h>
 #include <CGAL/Min_circle_2_traits_2.h>
@@ -7,6 +8,8 @@
 typedef CGAL::Exact_predicates_exact_constructions_kernel_with_sqrt K;
 typedef CGAL::Min_circle_2_traits_2<K>  Traits;
 typedef CGAL::Min_circle_2<Traits>      Min_circle;
+typedef CGAL::Min_circle_2< Traits >::Support_point_iterator Support_point_iterator;
+
 
 using namespace std;
 
@@ -38,9 +41,13 @@ void test_case(int n) {
 	// Remove points one by one and find minimum radius
 	K::FT min_r_squared = mc.circle().squared_radius();
 
-	for(int i=0; i<points.size(); i++) {
+	for(int i=0; i<mc.number_of_support_points(); i++) {
 		vector<K::Point_2> points_new = points;
-		points_new.erase(points_new.begin() + i);
+
+		Support_point_iterator to_erase = find(points_new.begin(), points_new.end(), *(mc.support_point(i)));
+
+		if(to_erase != points_new.end())
+			points_new.erase(to_erase);
 
 		Min_circle mc_new(points_new.begin(), points_new.end(), true);
 		K::FT r_squared = mc_new.circle().squared_radius();
