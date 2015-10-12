@@ -44,7 +44,7 @@ void test_case(int n) {
 	for(int i=0; i<mc.number_of_support_points(); i++) {
 		vector<K::Point_2> points_new = points;
 
-		Support_point_iterator to_erase = find(points_new.begin(), points_new.end(), *(mc.support_point(i)));
+		Support_point_iterator to_erase = find(points_new.begin(), points_new.end(), mc.support_point(i));
 
 		if(to_erase != points_new.end())
 			points_new.erase(to_erase);
