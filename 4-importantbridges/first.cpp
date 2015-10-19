@@ -44,6 +44,17 @@ void test_case() {
 		degree[n2] += 1;
 	}
 
+	// ---- EDGE CASE: n=2 ----
+	if(n == 2) {
+		if(m == 0)
+			cout << 0 << endl;
+		else
+			cout << "1 2" << endl;
+
+		return;
+	}
+
+
 	// Find articulation points in graph
 	vector<Vertex> art_points;
 	articulation_points(G, back_inserter(art_points));
@@ -97,12 +108,14 @@ void test_case() {
 
 int main(void) {
 	std::ios_base::sync_with_stdio(false);
-	
+
 	int t;
 	cin >> t;
 
-	for(int i=0; i<t; i++)
+	for(int i=0; i<t; i++) {
+		cout << "---- NEW TESTCASE ----" << endl;
 		test_case();
+	}
 
 	return 0;
 }
