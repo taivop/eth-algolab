@@ -59,7 +59,7 @@ void test_case() {
 			int v = target(*eit, G);
 
 			// If the other vertex is leaf or an articulation point itself
-			if(degree[v] == 1 || find(art_points.begin(), art_points.end(), v) == art_points.end()) {
+			if(degree[v] == 1 || find(art_points.begin(), art_points.end(), v) != art_points.end()) {
 				criticals.push_back("" + min(to_string(u), to_string(v)) + " " + max(to_string(u), to_string(v)));
 				//cout << u << " -> "<< v << endl;
 			}
@@ -68,24 +68,29 @@ void test_case() {
 
 	sort(criticals);
 
-	// Print results, removing duplicates
-	if(criticals.size() == 0)
-		cout << "0" << endl;
-	else {
-		cout << criticals.size() << endl;
-		string last = "";
-		for(int i=0; i<criticals.size(); i++) {
+	// Remove duplicates
+	string last;
+	vector<string> no_duplicates;
+	for(int i=0; i<criticals.size(); i++) {
 			if(i == 0) {
-				cout << criticals[i] << endl;
+				no_duplicates.push_back(criticals[i]);
 			} else {
 				last = criticals[i-1];
 				if(last != criticals[i]) {
-					cout << criticals[i] << endl;
+					no_duplicates.push_back(criticals[i]);
 					last = criticals[i];
 				}
 
 			}
+		}
 
+	// Print results
+	if(no_duplicates.size() == 0)
+		cout << "0" << endl;
+	else {
+		cout << no_duplicates.size() << endl;
+		for(int i=0; i<no_duplicates.size(); i++) {
+			cout << no_duplicates[i] << endl;
 		}
 	}
 }
