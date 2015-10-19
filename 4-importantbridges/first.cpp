@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <iterator>
+#include <string>
+#include <algorithm>
 
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
@@ -46,9 +48,10 @@ void test_case() {
 	vector<Vertex> art_points;
 	articulation_points(G, back_inserter(art_points));
 
+	vector<string> criticals;
+
 	for(auto u_it=art_points.begin(); u_it != art_points.end(); u_it++) {
 		Vertex u = *u_it;
-		cout << u << endl;
 
 		// Iterate over all edges of current articulation point
 		OutEdgeIt eit, eend;
@@ -56,12 +59,35 @@ void test_case() {
 			int v = target(*eit, G);
 
 			// If the other vertex is leaf or an articulation point itself
-			if(degree[v] == 1)
-				cout << u << " -> "<< v << endl;
+			if(degree[v] == 1 || find(art_points.begin(), art_points.end(), v) == art_points.end()) {
+				criticals.push_back("" + min(to_string(u), to_string(v)) + " " + max(to_string(u), to_string(v)));
+				//cout << u << " -> "<< v << endl;
+			}
 		}
-
 	}
-	
+
+	sort(criticals);
+
+	// Print results, removing duplicates
+	if(criticals.size() == 0)
+		cout << "0" << endl;
+	else {
+		cout << criticals.size() << endl;
+		string last = "";
+		for(int i=0; i<criticals.size(); i++) {
+			if(i == 0) {
+				cout << criticals[i] << endl;
+			} else {
+				last = criticals[i-1];
+				if(last != criticals[i]) {
+					cout << criticals[i] << endl;
+					last = criticals[i];
+				}
+
+			}
+
+		}
+	}
 }
 
 int main(void) {
