@@ -41,7 +41,7 @@ int rec_try(vector<int> A, vector<int> B) {
 	a = 1;
 	A_remain = vector<int>(A.begin(), A.end()-a);
 	for(b=1; b<B.size(); b++) {
-		int cost = (A[A.size()-1] - 1) * vector_sum(vector<int>(B.end()-b, B.end()));
+		int cost = (A[A.size()-1] - 1) * (vector_sum(vector<int>(B.end()-b, B.end())) - b);
 		vector<int> B_remain = vector<int>(B.begin(), B.end()-b);
 		int res = rec_try(A_remain, B_remain);
 		//cout << "REC:" << a << "," << b << " -> " << cost << "+" << res << endl;
@@ -56,7 +56,7 @@ int rec_try(vector<int> A, vector<int> B) {
 	b = 1;
 	B_remain = vector<int>(B.begin(), B.end()-b);
 	for(a=1; a<A.size(); a++) {
-		int cost = (B[B.size()-1] - 1) * vector_sum(vector<int>(A.end()-a, A.end()));
+		int cost = (B[B.size()-1] - 1) * (vector_sum(vector<int>(A.end()-a, A.end())) - a);
 		vector<int> A_remain = vector<int>(A.begin(), A.end()-a);
 		int res = rec_try(A_remain, B_remain);
 		//cout << "REC:" << a << "," << b << " -> " << cost << "+" << res << endl;
@@ -67,7 +67,7 @@ int rec_try(vector<int> A, vector<int> B) {
 		//cout << "took " << b << " elements" << endl;
 	}
 
-	cout << "best on A=" << vector_to_str(A) << ", B=" << vector_to_str(B) << " is " << best << endl;
+	//cout << "best on A=" << vector_to_str(A) << ", B=" << vector_to_str(B) << " is " << best << endl;
 
 	return(best); // the cost
 }
