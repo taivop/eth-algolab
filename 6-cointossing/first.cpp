@@ -44,7 +44,7 @@ void test_case() {
 	int n, m;
 	cin >> n >> m;				// <number_of_nodes> <number_of_edges>
 
-	cout << "---- n=" << n << ", m=" << m << " ----" << endl;
+	//cout << "---- n=" << n << ", m=" << m << " ----" << endl;
 
 	Graph G(n);
 	EdgeCapacityMap	capacity = get(edge_capacity, G);
@@ -66,7 +66,7 @@ void test_case() {
 	Vertex v_source = add_vertex(G);
 	Vertex v_sink = add_vertex(G);
 
-	for(int i=0; i<m; i++) {
+	for(int i=0; i<m; i++) { // Read all matches
 		int a, b, c;
 		cin >> a >> b >> c;
 
@@ -94,8 +94,9 @@ void test_case() {
 	
 	bool has_negative = false;
 	long subtracting = 0;
+	long sum_of_points = 0;
 
-	for(int i=0; i<n; i++) {
+	for(int i=0; i<n; i++) { // Read all point counts
 		int s;
 		cin >> s;
 
@@ -104,6 +105,7 @@ void test_case() {
 		// Player -> sink
 		ea.addEdge(p, v_sink, s - score[i]);
 		subtracting += score[i];
+		sum_of_points += s;
 
 		// cout << "s=" << s << ", score=" << score[i] << endl;
 		if(s - score[i] < 0) {
@@ -111,13 +113,13 @@ void test_case() {
 		}
 	}
 
-	if(has_negative) {
+	if(has_negative || sum_of_points != m) {
 		cout << "no" << endl;
 		return;
 	}
 
 	long flow = push_relabel_max_flow(G, v_source, v_sink);
-	cout << "Max flow found: " << flow << "+" << subtracting << "=" << flow+subtracting << ", number of matches=" << m << endl;
+	//cout << "Max flow found: " << flow << "+" << subtracting << "=" << flow+subtracting << ", number of matches=" << m << endl;
 
 	if(flow + subtracting == m)
 		cout << "yes" << endl;
