@@ -55,7 +55,7 @@ void test_case() {
 	int n, m, s;
 	cin >> n >> m >> s;
 
-	cout << "---- n=" << n << ", m=" << m << ", s=" << s << " ----" << endl;
+	//cout << "---- n=" << n << ", m=" << m << ", s=" << s << " ----" << endl;
 
 	Graph G(n);
 	EdgeCapacityMap	capacity = get(edge_capacity, G);
@@ -69,10 +69,10 @@ void test_case() {
 	for(int i=0; i<n; i++) {
 		Vertex p = add_vertex(G);
 		intersection.push_back(p);
-		cout << "Adding intersection " << p << endl;
+		// out << "Adding intersection " << p << endl;
 	}
 
-	cout << "intersection.size() = " << intersection.size() << endl;
+	// cout << "intersection.size() = " << intersection.size() << endl;
 
 	// Create source and sink
 	Vertex v_source = intersection[0];
@@ -92,7 +92,7 @@ void test_case() {
 		int a, b;
 		cin >> a >> b;
 
-		cout << "Adding street " << intersection[a] << "->" << intersection[b] << endl;
+		// cout << "Adding street " << intersection[a] << "->" << intersection[b] << endl;
 
 		Vertex inters_a = intersection[a];
 		Vertex inters_b = intersection[b];
@@ -105,7 +105,7 @@ void test_case() {
 	}
 
 	long flow = push_relabel_max_flow(G, v_source, v_sink);
-	cout << "Max flow found: " << flow << endl;
+	//cout << "Max flow found: " << flow << endl;
 
 	if(flow == s)
 		cout << "yes" << endl;
@@ -114,13 +114,13 @@ void test_case() {
 
 
 	EdgeIt e, eend;
-	for (tie(e, eend) = edges(G); e != eend; ++e) {
+	/*for (tie(e, eend) = edges(G); e != eend; ++e) {
 		// e is an iterator, *e is a descriptor.
 		Vertex u = source(*e, G), v = target(*e, G);
 		cout << "Edge (" << u << "," << v << ") has residual capacity " 
 			 << res_capacity[*e] << " and initial capacity "
 			 << capacity[*e] << "." << endl;
-	}
+	}*/
 
 	return;
 }
