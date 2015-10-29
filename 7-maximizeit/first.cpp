@@ -22,12 +22,15 @@ typedef CGAL::Quadratic_program_solution<ET> Solution;
 using namespace std;
 
 void test_case(int p) {
-	Program qp (CGAL::SMALLER, true, 0, false, 0);
 
 	int a, b;
 	cin >> a >> b;
 
+	Solution s;
+
 	if(p == 1) {
+		Program qp (CGAL::SMALLER, true, 0, false, 0);
+
 		const int X = 0;
 		const int Y = 1;
 
@@ -58,7 +61,7 @@ void test_case(int p) {
 		qp.set_c0(0);
 
 		// Solve
-		Solution s = CGAL::solve_quadratic_program(qp, ET());
+		s = CGAL::solve_quadratic_program(qp, ET());
 
 		// Output
 		if(s.status() == CGAL::QP_OPTIMAL) {
@@ -68,9 +71,49 @@ void test_case(int p) {
 			cout << "no" << endl;
 		}
 
-
 	} else {
-		cout << "" << endl;
+		Program qp (CGAL::LARGER, false, 0, true, 0);
+
+		const int X = 0;
+		const int Y = 1;
+		const int Q = 2;
+
+		// q >= 0
+		qp.set_l(Q, true, 0);	// Lower bound: 0
+		qp.set_u(Q, false, 0);	// Upper bound: +Inf
+
+		// x + y >= -4
+		qp.set_a(X, 0, 1);
+		qp.set_a(Y, 0, 1);
+		qp.set_b(	0, -4);
+
+		// 4x + 2y + q >= -ab
+		qp.set_a(X, 1, 4);
+		qp.set_a(Y, 1, 2);
+		qp.set_a(Q, 1, 1);
+		qp.set_b(	1, -a * b);
+
+		// -x + y >= -1
+		qp.set_a(X, 2, -1);
+		qp.set_a(Y, 2, 1);
+		qp.set_b(	2, -1);
+
+		// Cost function: ax^2 + by + q^2
+		qp.set_d(X, X, 2 * a);
+		qp.set_d(Q, Q, 2 * 1);
+		qp.set_c(Y, b);
+
+		// Solve
+		s = CGAL::solve_quadratic_program(qp, ET());
+
+		// Output
+		if(s.status() == CGAL::QP_OPTIMAL) {
+			cout << (int) CGAL::to_double(s.objective_value()) << endl; // Careful: possibility for WA here.
+			//cout << s << endl;
+		} else {
+			cout << "no" << endl;
+		}
+
 	}
 }
 
