@@ -76,6 +76,7 @@ void test_case(int n) {
 			Vertex_handle opposite_vertex  = current_face->vertex(neighbor_num);
 			Vertex_handle border_endpoint1 = current_face->vertex((neighbor_num + 1) % 3);
 			Vertex_handle border_endpoint2 = current_face->vertex((neighbor_num + 2) % 3);
+			K::FT border_length = CGAL::squared_distance(border_endpoint1->point(), border_endpoint2->point());
 			Edge border = pair<Face_handle, int>(current_face, neighbor_num);
 			Face_handle neighbor_face = current_face->neighbor(neighbor_num);
 			K::Point_2 neighbor_voronoi = t.dual(neighbor_face);
