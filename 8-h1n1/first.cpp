@@ -49,6 +49,7 @@ void test_case(int n) {
 		// --- Find an escape path for this person ---
 		// Find out at which face we are
 		Face_handle current_face = t.locate(escaper);
+		K::Point_2 current_voronoi = t.dual(current_face);
 
 		// Check if we are already outside
 		if(t.is_infinite(current_face)) {
@@ -56,7 +57,7 @@ void test_case(int n) {
 			continue;
 		}
 		// Check if we are already getting infected
-		K::Point_2 nearest_infected = t.nearest_vertex(escaper, current_face)->point();
+		/*K::Point_2 nearest_infected = t.nearest_vertex(escaper, current_face)->point();
 		cout << "Nearest infected person: " << nearest_infected << endl;
 		int dx = nearest_infected.x() - escaper.x();
 		int dy = nearest_infected.y() - escaper.y();
@@ -64,27 +65,21 @@ void test_case(int n) {
 		if(nearest_sqd < d) {
 			cout << "n";
 			continue;
-		}
+		}*/
 
 		// Check all incident faces if we could possibly go there
-		/*Triangulation::Face_circulator c = t.incident_faces(current_face); // TODO can't use face here
-		do {
-		  if (t.is_infinite(c)) { ... }
-		  ...
-		} while (++c != t.incident_edges(v));*/
 
 		vector<Face_handle> visited_faces;
 		visited_faces.push_back(current_face);
 
-		int edge_num = 0;
-		auto e = t.segment(current_face, edge_num);
-		K::Point_2 endpoint1 = e.vertex(0);
-		K::Point_2 endpoint2 = e.vertex(1);
-
-		// Move to nearest Voronoi point
-		/*K::Point_2 nearest_voronoi = t.dual(current_face);
-		cout << "Current face: " << *current_face << endl;
-		cout << "Nearest Voronoi node: " << nearest_voronoi << endl;*/
+		for(int neighbor_num=0; neighbor_num<3; neighbor_num++) {
+			Vertex_handle opposite_vertex  = current_face->vertex(neighbor_num);
+			Vertex_handle border_endpoint1 = current_face->vertex((neighbor_num + 1) % 3);
+			Vertex_handle border_endpoint2 = current_face->vertex((neighbor_num + 2) % 3);
+			Edge border = pair<Face_handle, int>(current_face, neighbor_num);
+			Face_handle neighbor_face = current_face->neighbor(neighbor_num);
+			K::Point_2 neighbor_voronoi = t.dual(neighbor_face);
+		}
 
 
 	}
