@@ -13,6 +13,7 @@ typedef Triangulation::Face_handle  Face_handle;
 typedef Triangulation::Face_circulator  Face_circulator;
 typedef Triangulation::Edge  Edge;
 typedef Triangulation::Vertex  Vertex;
+typedef Triangulation::Vertex_handle  Vertex_handle;
 
 
 using namespace std;
@@ -42,8 +43,8 @@ void test_case(int n) {
 
 	for(int i=0; i<m; i++) {
 		K::Point_2 escaper;
-		int c;
-		cin >> escaper >> c;
+		long d;
+		cin >> escaper >> d;
 
 		// --- Find an escape path for this person ---
 		// Find out at which face we are
@@ -54,18 +55,36 @@ void test_case(int n) {
 			cout << "y";
 			continue;
 		}
-		// TODO check if we are already getting infected
+		// Check if we are already getting infected
+		K::Point_2 nearest_infected = t.nearest_vertex(escaper, current_face)->point();
+		cout << "Nearest infected person: " << nearest_infected << endl;
+		int dx = nearest_infected.x() - escaper.x();
+		int dy = nearest_infected.y() - escaper.y();
+		long nearest_sqd = dx * dx + dy * dy;
+		if(nearest_sqd < d) {
+			cout << "n";
+			continue;
+		}
 
 		// Check all incident faces if we could possibly go there
-		Triangulation::Face_circulator c = t.incident_faces(current_face); // TODO can't use face here -- what can we use? https://judge.inf.ethz.ch/doc/cgal/doc_html/Triangulation_2/classCGAL_1_1Triangulation__2.html#a0cf72d2b0a303f23c5bc46aacc4d5fa4
+		/*Triangulation::Face_circulator c = t.incident_faces(current_face); // TODO can't use face here
 		do {
 		  if (t.is_infinite(c)) { ... }
 		  ...
-		} while (++c != t.incident_edges(v));
+		} while (++c != t.incident_edges(v));*/
+
+		vector<Face_handle> visited_faces;
+		visited_faces.push_back(current_face);
+
+		int edge_num = 0;
+		auto e = t.segment(current_face, edge_num);
+		K::Point_2 endpoint1 = e.vertex(0);
+		K::Point_2 endpoint2 = e.vertex(1);
 
 		// Move to nearest Voronoi point
-		K::Point_2 nearest_voronoi = t.dual(current_face);
-		cout << nearest_voronoi << endl;
+		/*K::Point_2 nearest_voronoi = t.dual(current_face);
+		cout << "Current face: " << *current_face << endl;
+		cout << "Nearest Voronoi node: " << nearest_voronoi << endl;*/
 
 
 	}
