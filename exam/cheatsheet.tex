@@ -46,6 +46,7 @@
 
 \begin{document}
 
+\section{Most important stuff}
 
 Estonian keymap: \verb+setxkbmap ee+
 
@@ -54,8 +55,173 @@ printf/stdio:
 std::ios_base::sync_with_stdio(false);
 \end{lstlisting}
 
-Compiling CGAL:
+
+\subsection{Tricks}
+\begin{itemize}
+  \item Graphs
+    \begin{itemize}
+    \item make 2 nodes for every node in original graph (Odd routes)
+    \item transform graph into another graph with more/less nodes (Odd routes, Carsharing)
+    \item flows: add offset to negative weights so we can use min cost max flow
+    \item flows: compress unneeded nodes (long paths) into single nodes (Carsharing)
+    \item show that graph is a special case, e.g. bipartite
+    \item maximum matching on a tree == vertex-disjoint edges on a tree
+      \begin{itemize}
+      \item greedily repeat: take an edge which contains a leaf and remove its endpoints 
+      \end{itemize}
+    \item create a bipartite graph if possible -- much more feasible to do matching and vertex cover on it!
+    \item if there is a restriction that each node can be traversed only once, then create in-node and out-node for each node, and do maximum matching on this BIPARTITE graph (Consecutive constructions)
+    \end{itemize}
+  \item Geometry / graphs on plane
+    \begin{itemize} 
+    \item good chance is that I can use Delaunay to build quickly if I need proximity structure only
+    \item use only predicates if at all possible -- orientation tests can do surprisingly many things
+    \end{itemize}
+  \item Other
+    \begin{itemize}
+    \item for interval scheduling, greedy with earliest finish time works!
+    \item think whether a brute-force solution would be good enough -- in Stamps it was
+    \item chessboard tasks -- use chessboard coloring
+    \item find a property of the task that allows me to apply some simpler/better running time algorithm
+    \item if I can find nothing else, start from modelling brute force solution and modifying that
+    \item if I have many queries, precompute/remember stuff so each query takes short time
+    \item note the numerical bounds on inputs
+      \begin{itemize}
+      \item can I brute force?
+      \item can I hold $input$ and $input^2$ in an int/long/double?
+      \end{itemize}
+    \item if maximising some cost function, think about LP/QP
+    \end{itemize}
+\end{itemize}
+
+\subsection{Debugging with Eclipse}
+For CGAL, need to have \verb+create_cgal_cmake_script+ done first.
+\begin{itemize}
+\item Start Eclipse (Win-key -- type 'Eclipse'); not the C/C++ debug one
+\item Open .cpp file
+\item Start debug: Run--Debug OR F11 OR bug-picture button
+\item Debugging:
+\begin{itemize}
+  \item Step into (F5): start stepping through the method call on the current line.
+  \item Step over (F6): consider the current method as one step and proceed to next line.
+  \item Step return (F7): run the entire method until the end and return.
+\end{itemize}
+\item Adding input file:
+\begin{itemize}
+  \item Run [or Debug] Configurations -- Common -- Standard Input and Output
+  \item Workspace/File System depending on where file is
+\end{itemize}
+%\item 
+\end{itemize}
+
+\newpage\subsection{Debugging with gdb}
+compile with -g flag:
+\begin{verbatim}
+g++ -g first.cpp -o first.o
+gdb first.o
+\end{verbatim}
+\begin{itemize}
+\item b main - Puts a breakpoint at the beginning of the program
+\item b - Puts a breakpoint at the current line
+\item b N - Puts a breakpoint at line N
+\item b +N - Puts a breakpoint N lines down from the current line
+\item b fn - Puts a breakpoint at the beginning of function "fn"
+\item d N - Deletes breakpoint number N
+\item info break - list breakpoints
+\item r - Runs the program until a breakpoint or error
+\item c - Continues running the program until the next breakpoint or error
+\item f - Runs until the current function is finished
+\item s - Runs the next line of the program
+\item s N - Runs the next N lines of the program
+\item n - Like s, but it does not step into functions
+\item u N - Runs until you get N lines in front of the current line
+\item p var - Prints the current value of the variable "var"
+\item bt - Prints a stack trace
+\item u - Goes up a level in the stack
+\item d - Goes down a level in the stack
+\item q - Quits gdb
+\end{itemize}
+
+
+\newpage\section{Templates \& library-specific}
+\subsection{ACM}
+\lstinputlisting{../template/first.cpp}
+\subsection{BGL}
+Getting vertex descriptor from vertex ID in BGL: \verb+vertex(vertex_id, G)+
+\lstinputlisting{../template-bgl/first.cpp}
+\subsection{CGAL}
+\lstinputlisting{../template-cgal/first.cpp}
+Compiling:
 \lstinputlisting{../template-cgal/build.sh}
+
+\newpage\section{Standard stuff}
+\subsection{Passing variables by reference}
+\lstinputlisting{../chunks/std/pass_by_reference.cpp}
+\subsection{Priority queue}
+\lstinputlisting{../chunks/std/priority_queue.cpp}
+\subsection{Custom structs (and queues)}
+\lstinputlisting{../chunks/std/custom_struct.cpp}
+
+
+\newpage\section{Chunks}
+\subsection*{CGAL elementary}
+Predicates
+\lstinputlisting{../chunks/cgal/elementary/predicates.cpp}
+Constructions
+\lstinputlisting{../chunks/cgal/elementary/constructions.cpp}
+\subsection*{CGAL advanced}
+Delauney-Voronoi
+\lstinputlisting{../chunks/cgal/advanced/delauney-voronoi.cpp}
+\subsection*{BGL elementary}
+Matching
+\lstinputlisting{../chunks/bgl/elementary/matching.cpp}
+Minimum spanning tree (MST) and strongly connected components (SCC)
+\lstinputlisting{../chunks/bgl/elementary/mst_scc.cpp}
+Shortest paths
+\lstinputlisting{../chunks/bgl/elementary/shortest_paths.cpp}
+\subsection*{BGL advanced (flows)}
+Simple flows
+\lstinputlisting{../chunks/bgl/flows/simple_flows.cpp}
+Bipartite matching
+\lstinputlisting{../chunks/bgl/flows/bipartite_matching.cpp}
+Minimum cut
+\lstinputlisting{../chunks/bgl/flows/min_cut.cpp}
+Min cost max flow
+\lstinputlisting{../chunks/bgl/flows/min_cost_max_flow.cpp}
+
+\newpage\section{My solutions}
+
+\subsection*{1-Build the sum}
+\lstinputlisting{../1-buildthesum/first.cpp}
+\subsection*{1-Dominoes}
+\lstinputlisting{../1-dominoes/first.cpp}
+\subsection*{1-Shelves}
+\lstinputlisting{../1-shelves/fourth.cpp}
+\subsection*{2-Race tracks}
+\lstinputlisting{../2-racetracks/first.cpp}
+\subsection*{3-Antenna}
+\lstinputlisting{../3-antenna/first.cpp}
+\subsection*{3-Hit}
+\lstinputlisting{../3-hit/first.cpp}
+\subsection*{4-Important bridges}
+\lstinputlisting{../4-importantbridges/second.cpp}
+\subsection*{6-Coin tossing}
+\lstinputlisting{../6-cointossing/first.cpp}
+\subsection*{6-Shopping trip}
+\lstinputlisting{../6-shoppingtrip/first.cpp}
+\subsection*{7-Diet}
+\lstinputlisting{../7-diet/first.cpp}
+\subsection*{7-Portfolios}
+\lstinputlisting{../7-portfolios/first.cpp}
+\subsection*{8-Bistro}
+\lstinputlisting{../8-bistro/first.cpp}
+\subsection*{8-Graypes}
+\lstinputlisting{../8-graypes/second.cpp}
+
+%\subsection*{}
+%\lstinputlisting{..//first.cpp}
+
+
 
 
 \end{document}

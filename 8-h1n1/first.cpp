@@ -59,6 +59,8 @@ bool recurse(Face_handle current_face, long d, vector<Face_handle>& visited, Tri
 			if(recurse(neighbor_face, d, visited, t)) {
 				return true;
 			}
+		} else {
+			cout << "cannot fit through edge :S" << endl;
 		}
 	}
 
